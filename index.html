@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Size Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        select, button {
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s, border 0.3s;
+        }
+        select {
+            border: 1px solid;
+        }
+        button {
+            margin-left: 10px;
+            border: none;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #fff;
+        }
+        .dark-mode .container {
+            background: #1e1e1e;
+        }
+        .dark-mode select, .dark-mode button {
+            background: #333;
+            color: #fff;
+            border-color: #555;
+        }
+        .dark-mode select:hover, .dark-mode button:hover {
+            border-color: #777;
+        }
+        .light-mode {
+            background-color: #f5f5f5;
+            color: #000;
+        }
+        .light-mode .container {
+            background: #fff;
+        }
+        .light-mode select, .light-mode button {
+            background: #ddd;
+            color: #000;
+            border-color: #bbb;
+        }
+        .light-mode select:hover, .light-mode button:hover {
+            border-color: #999;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="container">
+        <h1>Screen Size</h1>
+        <p id="dimensions">Loading...</p>
+        <label for="unit-select">Select Unit:</label>
+        <select id="unit-select" onchange="updateScreenSize()">
+            <option value="px">Pixels (px)</option>
+            <option value="in">Inches (in)</option>
+            <option value="cm">Centimeters (cm)</option>
+        </select>
+        <button onclick="toggleTheme()">Toggle Theme</button>
+    </div>
+
+    <script>
+        function updateScreenSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const unit = document.getElementById('unit-select').value;
+            let displayWidth = width;
+            let displayHeight = height;
+
+            if (unit === 'in') {
+                displayWidth = (width / window.devicePixelRatio / 96).toFixed(2);
+                displayHeight = (height / window.devicePixelRatio / 96).toFixed(2);
+            } else if (unit === 'cm') {
+                displayWidth = (width / window.devicePixelRatio / 37.795).toFixed(2);
+                displayHeight = (height / window.devicePixelRatio / 37.795).toFixed(2);
+            }
+
+            document.getElementById('dimensions').textContent = `Width: ${displayWidth}${unit}, Height: ${displayHeight}${unit}`;
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            document.body.classList.toggle("light-mode");
+        }
+        
+        window.onload = updateScreenSize;
+        window.onresize = updateScreenSize;
+    </script>
+</body>
+</html>
